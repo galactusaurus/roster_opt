@@ -1,0 +1,51 @@
+Position,Name + ID,Name,ID,Roster Position,Salary,Game Info,TeamAbbrev,AvgPointsPerGame
+D,Oscar Piastri (39158415),Oscar Piastri,39158415,CPT,18900,Austrian Grand Prix 2025,MCL,25.23
+D,Lando Norris (39158416),Lando Norris,39158416,CPT,18000,Austrian Grand Prix 2025,MCL,22.07
+D,Max Verstappen (39158417),Max Verstappen,39158417,CPT,17400,Austrian Grand Prix 2025,RB,22.51
+D,George Russell (39158418),George Russell,39158418,CPT,16500,Austrian Grand Prix 2025,MERC,19.33
+CNSTR,McLaren  (39158435),McLaren ,39158435,CNSTR,15000,Austrian Grand Prix 2025,MCL,49
+D,Charles Leclerc (39158419),Charles Leclerc,39158419,CPT,15000,Austrian Grand Prix 2025,FERR,17.56
+D,Lewis Hamilton (39158420),Lewis Hamilton,39158420,CPT,13500,Austrian Grand Prix 2025,FERR,9.57
+D,Oscar Piastri (39158395),Oscar Piastri,39158395,D,12600,Austrian Grand Prix 2025,MCL,25.23
+D,Lando Norris (39158396),Lando Norris,39158396,D,12000,Austrian Grand Prix 2025,MCL,22.07
+D,Andrea Kimi Antonelli (39158421),Andrea Kimi Antonelli,39158421,CPT,12000,Austrian Grand Prix 2025,MERC,5.71
+D,Max Verstappen (39158397),Max Verstappen,39158397,D,11600,Austrian Grand Prix 2025,RB,22.51
+D,George Russell (39158398),George Russell,39158398,D,11000,Austrian Grand Prix 2025,MERC,19.33
+CNSTR,Mercedes  (39158436),Mercedes ,39158436,CNSTR,10500,Austrian Grand Prix 2025,MERC,24.14
+D,Charles Leclerc (39158399),Charles Leclerc,39158399,D,10000,Austrian Grand Prix 2025,FERR,17.56
+CNSTR,Ferrari  (39158437),Ferrari ,39158437,CNSTR,9700,Austrian Grand Prix 2025,FERR,25.57
+CNSTR,Red Bull Racing  (39158438),Red Bull Racing ,39158438,CNSTR,9500,Austrian Grand Prix 2025,RB,20.51
+D,Alexander Albon (39158422),Alexander Albon,39158422,CPT,9300,Austrian Grand Prix 2025,WILL,7.51
+D,Lewis Hamilton (39158400),Lewis Hamilton,39158400,D,9000,Austrian Grand Prix 2025,FERR,9.57
+D,Carlos Sainz Jr. (39158423),Carlos Sainz Jr.,39158423,CPT,9000,Austrian Grand Prix 2025,WILL,3.67
+D,Fernando Alonso (39158424),Fernando Alonso,39158424,CPT,8400,Austrian Grand Prix 2025,AM,3.6
+D,Andrea Kimi Antonelli (39158401),Andrea Kimi Antonelli,39158401,D,8000,Austrian Grand Prix 2025,MERC,5.71
+D,Isack Hadjar (39158425),Isack Hadjar,39158425,CPT,7800,Austrian Grand Prix 2025,VCARB,8
+D,Pierre Gasly (39158426),Pierre Gasly,39158426,CPT,7200,Austrian Grand Prix 2025,ALPN,5.88
+D,Nico Hulkenberg (39158427),Nico Hulkenberg,39158427,CPT,6900,Austrian Grand Prix 2025,SAUB,8.44
+D,Yuki Tsunoda (39158428),Yuki Tsunoda,39158428,CPT,6600,Austrian Grand Prix 2025,RB,1.3
+D,Alexander Albon (39158402),Alexander Albon,39158402,D,6200,Austrian Grand Prix 2025,WILL,7.51
+D,Carlos Sainz Jr. (39158403),Carlos Sainz Jr.,39158403,D,6000,Austrian Grand Prix 2025,WILL,3.67
+D,Esteban Ocon (39158429),Esteban Ocon,39158429,CPT,6000,Austrian Grand Prix 2025,HAAS,7.4
+D,Franco Colapinto (39158430),Franco Colapinto,39158430,CPT,5700,Austrian Grand Prix 2025,ALPN,4.25
+D,Fernando Alonso (39158404),Fernando Alonso,39158404,D,5600,Austrian Grand Prix 2025,AM,3.6
+D,Oliver Bearman (39158431),Oliver Bearman,39158431,CPT,5400,Austrian Grand Prix 2025,HAAS,3.9
+D,Isack Hadjar (39158405),Isack Hadjar,39158405,D,5200,Austrian Grand Prix 2025,VCARB,8
+D,Liam Lawson (39158432),Liam Lawson,39158432,CPT,5100,Austrian Grand Prix 2025,VCARB,1.4
+D,Pierre Gasly (39158406),Pierre Gasly,39158406,D,4800,Austrian Grand Prix 2025,ALPN,5.88
+D,Lance Stroll (39158433),Lance Stroll,39158433,CPT,4800,Austrian Grand Prix 2025,AM,3.78
+D,Nico Hulkenberg (39158407),Nico Hulkenberg,39158407,D,4600,Austrian Grand Prix 2025,SAUB,8.44
+D,Gabriel Bortoleto (39158434),Gabriel Bortoleto,39158434,CPT,4500,Austrian Grand Prix 2025,SAUB,1.8
+D,Yuki Tsunoda (39158408),Yuki Tsunoda,39158408,D,4400,Austrian Grand Prix 2025,RB,1.3
+CNSTR,Williams  (39158439),Williams ,39158439,CNSTR,4100,Austrian Grand Prix 2025,WILL,8.21
+D,Esteban Ocon (39158409),Esteban Ocon,39158409,D,4000,Austrian Grand Prix 2025,HAAS,7.4
+D,Franco Colapinto (39158410),Franco Colapinto,39158410,D,3800,Austrian Grand Prix 2025,ALPN,4.25
+D,Oliver Bearman (39158411),Oliver Bearman,39158411,D,3600,Austrian Grand Prix 2025,HAAS,3.9
+D,Liam Lawson (39158412),Liam Lawson,39158412,D,3400,Austrian Grand Prix 2025,VCARB,1.4
+D,Lance Stroll (39158413),Lance Stroll,39158413,D,3200,Austrian Grand Prix 2025,AM,3.78
+CNSTR,Aston Martin F1 Team  (39158440),Aston Martin F1 Team ,39158440,CNSTR,3100,Austrian Grand Prix 2025,AM,2.8
+D,Gabriel Bortoleto (39158414),Gabriel Bortoleto,39158414,D,3000,Austrian Grand Prix 2025,SAUB,1.8
+CNSTR,Alpine F1 Team  (39158441),Alpine F1 Team ,39158441,CNSTR,3000,Austrian Grand Prix 2025,ALPN,2.2
+CNSTR,Haas F1 Team  (39158442),Haas F1 Team ,39158442,CNSTR,3000,Austrian Grand Prix 2025,HAAS,4.7
+CNSTR,Racing Bulls F1 Team  (39158443),Racing Bulls F1 Team ,39158443,CNSTR,3000,Austrian Grand Prix 2025,VCARB,4.4
+CNSTR,Sauber  (39158444),Sauber ,39158444,CNSTR,3000,Austrian Grand Prix 2025,SAUB,3.4

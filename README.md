@@ -1,6 +1,6 @@
 # Daily Fantasy Sports Lineup Optimizer
 
-This repository contains tools to optimize lineups for various Daily Fantasy Sports contests. Currently, it supports MLB (Baseball) with plans to add NFL, NBA, and NHL in the future. The optimizer uses linear programming to find the highest-scoring lineup possible within the given constraints.
+This repository contains tools to optimize lineups for various Daily Fantasy Sports contests. Currently, it supports MLB (Baseball) and Formula 1 with plans to add NFL, NBA, and NHL in the future. The optimizer uses linear programming to find the highest-scoring lineup possible within the given constraints.
 
 ## Requirements
 
@@ -14,6 +14,7 @@ This repository contains tools to optimize lineups for various Daily Fantasy Spo
 The project is organized into sport-specific subdirectories:
 
 - `MLB_Optimizer/` - MLB baseball lineup optimizer
+- `F1_Optimizer/` - Formula 1 lineup optimizer
 - `NFL_Optimizer/` - (Coming soon) NFL football lineup optimizer
 - `NBA_Optimizer/` - (Coming soon) NBA basketball lineup optimizer
 - `NHL_Optimizer/` - (Coming soon) NHL hockey lineup optimizer
@@ -44,16 +45,18 @@ optimize.bat
 This will present a menu where you can choose which sport's optimizer to run:
 
 1. MLB (Baseball)
-2. NFL (Football) - Coming soon
-3. NBA (Basketball) - Coming soon
-4. NHL (Hockey) - Coming soon
-5. Exit
+2. Formula 1
+3. NFL (Football) - Coming soon
+4. NBA (Basketball) - Coming soon
+5. NHL (Hockey) - Coming soon
+6. Exit
 
 ### Sport-Specific Documentation
 
 For detailed information on how to use a particular sport's optimizer, please refer to the README.md file in that sport's directory:
 
 - [MLB Optimizer Documentation](./MLB_Optimizer/README.md)
+- [Formula 1 Optimizer Documentation](./F1_Optimizer/README.md)
 
 ## Output
 

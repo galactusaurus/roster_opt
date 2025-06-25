@@ -9,6 +9,11 @@ echo Installing MLB Optimizer packages...
 pip install -r requirements.txt
 cd ..
 
+cd F1_Optimizer
+echo Installing Formula 1 Optimizer packages...
+pip install -r requirements.txt
+cd ..
+
 rem Future extensions can be added here
 rem cd NFL_Optimizer
 rem echo Installing NFL Optimizer packages...
