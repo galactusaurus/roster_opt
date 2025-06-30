@@ -24,7 +24,18 @@ if "%choice%"=="1" (
 
 if "%choice%"=="2" (
     echo Running advanced optimizer...
-    python advanced_optimizer.py --output "optimized_lineups.csv"
+    
+    :: Ask about lineup differentiation
+    set /p use_diff="Do you want to limit the number of times a player can appear in lineups? (y/n): "
+    
+    if /i "%use_diff%"=="y" (
+        set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+        echo.
+        python advanced_optimizer.py --output "optimized_lineups.csv" --max-player-appearances %max_appearances%
+    ) else (
+        python advanced_optimizer.py --output "optimized_lineups.csv"
+    )
+    
     pause
     goto menu
 )
@@ -62,10 +73,29 @@ if "%choice%"=="3" (
         set /p USE_FILE="Use this injury list? (y/n): "
         
         if /i "%USE_FILE%"=="y" (
-            python advanced_optimizer.py --injured-list "%INJURY_FILE%" --output "optimized_lineups.csv"
+            :: Ask about lineup differentiation
+            set /p use_diff="Do you want to limit the number of times a player can appear in lineups? (y/n): "
+            
+            if /i "%use_diff%"=="y" (
+                set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+                echo.
+                python advanced_optimizer.py --injured-list "%INJURY_FILE%" --output "optimized_lineups.csv" --max-player-appearances %max_appearances%
+            ) else (
+                python advanced_optimizer.py --injured-list "%INJURY_FILE%" --output "optimized_lineups.csv"
+            )
         ) else (
             echo Running without injury list filter.
-            python advanced_optimizer.py --output "optimized_lineups.csv"
+            
+            :: Ask about lineup differentiation
+            set /p use_diff="Do you want to limit the number of times a player can appear in lineups? (y/n): "
+            
+            if /i "%use_diff%"=="y" (
+                set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+                echo.
+                python advanced_optimizer.py --output "optimized_lineups.csv" --max-player-appearances %max_appearances%
+            ) else (
+                python advanced_optimizer.py --output "optimized_lineups.csv"
+            )
         )
     ) else (
         echo No injury list found automatically.

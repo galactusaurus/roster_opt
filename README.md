@@ -58,6 +58,23 @@ For detailed information on how to use a particular sport's optimizer, please re
 - [MLB Optimizer Documentation](./MLB_Optimizer/README.md)
 - [Formula 1 Optimizer Documentation](./F1_Optimizer/README.md)
 
+## Features
+
+### Core Features
+- Generate multiple optimized lineups based on player projections
+- Enforce salary cap constraints
+- Support for team stacking strategies
+- Ensure proper position requirements
+- Filter out injured players (MLB)
+- Multiple output formats for upload to DFS sites
+
+### Advanced Features
+- **Lineup Differentiation**: Limit how many times a player can appear across your lineups
+- Team stacking: Build lineups with multiple players from the same team
+- Lineup diversity: Ensure lineups differ from each other by a minimum number of players
+- Customizable salary cap usage
+- Team exposure limits: Set maximum players from any one team
+
 ## Output
 
 Each optimizer will generate optimized lineups and save them to CSV files within their respective sport directories.

@@ -192,3 +192,8 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Output directories
+**/Outputs/
+MLB_Optimizer/Outputs/
+F1_Optimizer/Outputs/

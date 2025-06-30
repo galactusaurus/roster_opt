@@ -137,7 +137,8 @@ class AdvancedLineupOptimizer:
         stack_team: Optional[str] = None,
         stack_count: int = 4,
         min_salary_used: float = 0.95,
-        lineup_diversity: int = 3
+        lineup_diversity: int = 3,
+        max_player_appearances: Optional[int] = None
     ) -> List[Dict]:
         """
         Generate optimized lineups with advanced constraints.
@@ -148,6 +149,7 @@ class AdvancedLineupOptimizer:
             stack_count: Number of players to include from stacked team
             min_salary_used: Minimum fraction of salary cap that must be used
             lineup_diversity: Minimum number of different players between lineups
+            max_player_appearances: Maximum number of times a player can appear across all lineups
             
         Returns:
             List of dictionaries, each containing a lineup with player details
@@ -155,6 +157,9 @@ class AdvancedLineupOptimizer:
         lineups = []
         opponents_dict = self._extract_opponents()
         previous_lineups_players = []
+        
+        # Keep track of how many times each player appears across lineups
+        player_appearances = {player_id: 0 for player_id in self.players_df['ID'].values}
         
         for i in range(num_lineups):
             # Create a new linear programming problem
@@ -212,7 +217,19 @@ class AdvancedLineupOptimizer:
                 stack_team_players = self.players_df[self.players_df['TeamAbbrev'] == stack_team]
                 prob += plp.lpSum(player_vars[player['ID']] for _, player in stack_team_players.iterrows()) >= stack_count
             
-            # Constraint 9: Ensure uniqueness from previous lineups
+            # Constraint 9: Limit on player appearances across lineups
+            if max_player_appearances is not None:
+                excluded_count = 0
+                for player_id, appearances in player_appearances.items():
+                    if appearances >= max_player_appearances:
+                        # If player has reached maximum allowed appearances, exclude them from this lineup
+                        prob += player_vars[player_id] == 0
+                        excluded_count += 1
+                
+                if excluded_count > 0 and i > 0:  # Only print for second lineup onwards
+                    print(f"Lineup {i+1}: Excluded {excluded_count} players who reached the max appearance limit of {max_player_appearances}")
+            
+            # Constraint 10: Ensure uniqueness from previous lineups
             for prev_lineup in previous_lineups_players:
                 # New lineup must differ from each previous lineup by at least lineup_diversity players
                 prob += plp.lpSum(player_vars[player_id] for player_id in prev_lineup) <= len(prev_lineup) - lineup_diversity
@@ -232,6 +249,10 @@ class AdvancedLineupOptimizer:
                                  if plp.value(var) == 1]
             previous_lineups_players.append(selected_player_ids)
             
+            # Update player appearance counts
+            for player_id in selected_player_ids:
+                player_appearances[player_id] += 1
+            
             # Create lineup data
             lineup_data = {
                 'players': [],
@@ -245,6 +266,7 @@ class AdvancedLineupOptimizer:
                 opponent = opponents_dict.get(player['TeamAbbrev'], "Unknown")
                 
                 lineup_data['players'].append({
+                    'id': player_id,  # Store the player ID directly
                     'name': player['Name'],
                     'position': player['Roster Position'],
                     'team': player['TeamAbbrev'],
@@ -402,10 +424,9 @@ class AdvancedLineupOptimizer:
                 for player in lineup['players']:
                     pos = player['position']
                     if pos in players_by_position:
-                        # Get player ID
+                        # Use the stored player ID
                         player_data = {
-                            'id': self.players_df[(self.players_df['Name'] == player['name']) & 
-                                                 (self.players_df['Roster Position'] == pos)]['ID'].values[0],
+                            'id': player['id'],  # Use the ID we stored when creating the lineup
                             'avg_points': player['avg_points']
                         }
                         players_by_position[pos].append(player_data)
@@ -429,6 +450,56 @@ class AdvancedLineupOptimizer:
                 csvwriter.writerow(roster_row)
         
         print(f"\nLineups saved to {output_path} in position-based format")
+    
+    def summarize_player_usage(self, lineups: List[Dict], max_player_appearances: Optional[int] = None) -> None:
+        """
+        Print a summary of how many times each player appears across all lineups.
+        
+        Args:
+            lineups: List of lineup dictionaries
+            max_player_appearances: The maximum allowed appearances, if any
+        """
+        if not lineups:
+            return
+            
+        # Count appearances for each player
+        player_usage = defaultdict(int)
+        player_ids = {}  # To map names to IDs
+        
+        for lineup in lineups:
+            for player in lineup['players']:
+                player_id = player['id']
+                player_name = player['name']
+                player_usage[player_name] += 1
+                player_ids[player_name] = player_id
+                
+        # Print summary
+        print(f"\n{'='*80}")
+        print(f"PLAYER USAGE SUMMARY (Total lineups: {len(lineups)})")
+        print(f"{'-'*80}")
+        print(f"{'NAME':<30}{'POSITION':<10}{'APPEARANCES':<15}{'% OF LINEUPS':<15}")
+        print(f"{'-'*80}")
+        
+        # Get position for each player
+        player_positions = {}
+        for lineup in lineups:
+            for player in lineup['players']:
+                player_positions[player['name']] = player['position']
+        
+        # Sort players by number of appearances (descending)
+        sorted_players = sorted(player_usage.items(), key=lambda x: x[1], reverse=True)
+        
+        for player_name, count in sorted_players:
+            position = player_positions.get(player_name, "")
+            percentage = (count / len(lineups)) * 100
+            
+            # Highlight players at the appearance limit
+            if max_player_appearances and count >= max_player_appearances:
+                print(f"{player_name:<30}{position:<10}{count:<15}{percentage:.1f}% **MAX**")
+            else:
+                print(f"{player_name:<30}{position:<10}{count:<15}{percentage:.1f}%")
+                
+        print(f"{'='*80}")
 
 def parse_args():
     """Parse command-line arguments."""
@@ -451,6 +522,8 @@ def parse_args():
                         help='Minimum fraction of salary cap to use (default: 0.95)')
     parser.add_argument('--lineup-diversity', type=int, default=3, 
                         help='Minimum number of different players between lineups (default: 3)')
+    parser.add_argument('--max-player-appearances', type=int, 
+                        help='Maximum number of times a player can appear across all lineups')
     parser.add_argument('--injured-list', type=str,
                         help='Path to CSV file containing injured players')
     parser.add_argument('--output', type=str, default='optimized_lineups.csv', 
@@ -567,6 +640,11 @@ def main():
                 args.max_from_team = int(input(f"Enter maximum players from one team (default {args.max_from_team}): ") or args.max_from_team)
                 args.min_teams = int(input(f"Enter minimum number of teams (default {args.min_teams}): ") or args.min_teams)
                 
+                # Ask about max player appearances
+                max_appearances_input = input(f"Enter maximum times a player can appear across all lineups (leave blank for no limit): ")
+                if max_appearances_input:
+                    args.max_player_appearances = int(max_appearances_input)
+                
                 # Injured list handling is now managed by the batch file before launching the script
                 
                 # Update optimizer with new parameters
@@ -580,7 +658,8 @@ def main():
             stack_team=args.stack_team,
             stack_count=args.stack_count,
             min_salary_used=args.min_salary_used,
-            lineup_diversity=args.lineup_diversity
+            lineup_diversity=args.lineup_diversity,
+            max_player_appearances=args.max_player_appearances
         )
         
         if not lineups:
@@ -589,6 +668,10 @@ def main():
         
         # Display the results
         optimizer.display_lineups(lineups)
+        
+        # If max player appearances was set, display the player usage summary
+        if args.max_player_appearances:
+            optimizer.summarize_player_usage(lineups, args.max_player_appearances)
         
         # Save results to CSV
         # Generate timestamp for unique filenames

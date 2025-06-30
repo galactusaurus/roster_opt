@@ -28,6 +28,7 @@ The tool optimizes for DraftKings Formula 1 rosters, which consist of:
 - Control maximum drivers from a single team
 - Set minimum number of different teams
 - Control lineup diversity when generating multiple lineups
+- Limit player exposure across lineups (max appearances)
 - Minimum salary utilization
 
 ## Installation

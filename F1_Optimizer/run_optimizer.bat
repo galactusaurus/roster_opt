@@ -23,7 +23,18 @@ if "%option%"=="2" (
     echo.
     echo Running advanced Formula 1 lineup optimizer...
     echo.
-    python advanced_optimizer.py
+    
+    :: Ask about lineup differentiation
+    set /p use_diff="Do you want to limit the number of times a player can appear in lineups? (y/n): "
+    
+    if /i "%use_diff%"=="y" (
+        set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+        echo.
+        python advanced_optimizer.py --max-player-appearances %max_appearances%
+    ) else (
+        python advanced_optimizer.py
+    )
+    
     pause
     exit /b 0
 )

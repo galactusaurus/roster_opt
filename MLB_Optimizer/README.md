@@ -45,6 +45,7 @@ Available arguments:
 - `--min-teams`: Minimum number of teams in a lineup (default: 3)
 - `--min-salary-used`: Minimum fraction of salary cap to use (default: 0.95)
 - `--lineup-diversity`: Minimum number of different players between lineups (default: 3)
+- `--max-player-appearances`: Maximum number of times a player can appear across all lineups
 - `--injured-list`: Path to CSV file containing injured players to exclude
 - `--output`: Output CSV file name (default: optimized_lineups.csv)
 
