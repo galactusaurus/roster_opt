@@ -4,7 +4,28 @@ Advanced Daily Fantasy Baseball Lineup Optimizer
 
 This script provides enhanced optimization for Daily Fantasy Baseball contests using linear programming.
 It supports advanced features like team stacking, player correlation, and multiple lineup generation
-with customizable diversity.
+with customizable diversity. 
+
+Key Features:
+- Exclude injured players using an injury list CSV file (auto-detection available)
+- Limit the number of times a player can appear across generated lineups
+- Team stacking for strategic advantage
+- Lineup diversity controls
+- Salary cap optimization
+
+Advanced features can be used independently or together. For example, you can both exclude injured players
+AND limit player appearances across lineups by using the --auto-detect-injury and --max-player-appearances 
+parameters together.
+
+Using the automatic injury detection:
+The --auto-detect-injury flag will search for the most recent injury CSV file in:
+- Current directory
+- Parent directory
+- User's Downloads folder
+- Data directory (if it exists)
+- Documents folder (as a fallback)
+
+For best results, make sure your injury file has "injury", "injured", or "IL" in the filename.
 """
 
 import os
@@ -88,12 +109,42 @@ class AdvancedLineupOptimizer:
             injured_list_path: Path to the CSV file containing injured players
         """
         try:
-            # Load injured players data
-            injured_df = pd.read_csv(injured_list_path)
+            print(f"Loading injured players from: {injured_list_path}")
+            
+            # Verify the file exists
+            if not os.path.exists(injured_list_path):
+                print(f"Error: Injury file not found at {injured_list_path}")
+                return
+            
+            # Load injured players data with explicit encoding
+            try:
+                injured_df = pd.read_csv(injured_list_path, encoding='utf-8')
+            except UnicodeDecodeError:
+                # Fall back to latin-1 encoding if utf-8 fails
+                print("UTF-8 encoding failed, trying latin-1 encoding...")
+                injured_df = pd.read_csv(injured_list_path, encoding='latin-1')
+            
+            # Print column names to help diagnose issues
+            print(f"Injury file columns: {list(injured_df.columns)}")
+            
+            # Try to find the player column - check common variations
+            player_column = None
+            for possible_name in ['Player', 'Name', 'PLAYER', 'NAME', 'player', 'name', 'PlayerName', 'Player Name']:
+                if possible_name in injured_df.columns:
+                    player_column = possible_name
+                    print(f"Using '{player_column}' as the player name column")
+                    break
+                    
+            if player_column is None:
+                print("Error: No suitable player name column found in the injury file")
+                print("Available columns:", injured_df.columns.tolist())
+                return
             
             # Create a set of player names that are on the injured list
-            injured_players = set(injured_df['Player'].str.strip().tolist())
+            injured_players = set(injured_df[player_column].str.strip().tolist())
             initial_player_count = len(self.players_df)
+            
+            print(f"Found {len(injured_players)} players on the injury list")
             
             # Check if a player's name is in the injured list
             def is_not_injured(player_name):
@@ -109,6 +160,8 @@ class AdvancedLineupOptimizer:
             
         except Exception as e:
             print(f"Error processing injured list: {str(e)}")
+            import traceback
+            traceback.print_exc()
             print("Continuing with all players (no injury filtering)")
         
     def _extract_opponents(self) -> Dict[str, str]:
@@ -526,6 +579,8 @@ def parse_args():
                         help='Maximum number of times a player can appear across all lineups')
     parser.add_argument('--injured-list', type=str,
                         help='Path to CSV file containing injured players')
+    parser.add_argument('--auto-detect-injury', action='store_true',
+                        help='Automatically detect and use the most recent injury list file')
     parser.add_argument('--output', type=str, default='optimized_lineups.csv', 
                         help='Output CSV file name (default: optimized_lineups.csv)')
     
@@ -571,10 +626,22 @@ def find_injured_list():
     # Look for common injury file patterns
     injury_patterns = ["mlb-injury*.csv", "*injury*.csv", "*injured*.csv", "*-IL-*.csv"]
     
-    # First check the downloads directory
-    user_downloads = os.path.join(os.path.expanduser("~"), "Downloads")
+    # Define search directories in priority order
     current_dir = os.getcwd()
-    search_dirs = [current_dir, user_downloads]
+    parent_dir = os.path.dirname(current_dir)
+    user_downloads = os.path.join(os.path.expanduser("~"), "Downloads")
+    
+    search_dirs = [
+        current_dir,                       # Current directory (MLB_Optimizer)
+        parent_dir,                        # Parent directory (roster_opt)
+        user_downloads,                    # User's Downloads folder
+        os.path.join(parent_dir, "data"),  # Possible data directory
+    ]
+    
+    print("Searching for injury list files in:")
+    for directory in search_dirs:
+        if os.path.exists(directory):
+            print(f"- {directory}")
     
     all_matches = []
     import glob
@@ -583,16 +650,96 @@ def find_injured_list():
     for directory in search_dirs:
         if os.path.exists(directory):
             for pattern in injury_patterns:
-                matches = glob.glob(os.path.join(directory, pattern))
+                full_pattern = os.path.join(directory, pattern)
+                matches = glob.glob(full_pattern)
+                if matches:
+                    print(f"  Found {len(matches)} matches for '{full_pattern}'")
                 all_matches.extend(matches)
     
-    # Sort by modification time (newest first)
-    all_matches.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    # If no matches found, try case-insensitive search on Windows
+    if not all_matches and os.name == 'nt':
+        print("No files found with standard patterns, trying case-insensitive search...")
+        for directory in search_dirs:
+            if os.path.exists(directory):
+                # List all CSV files and filter them manually
+                all_files = glob.glob(os.path.join(directory, "*.csv"))
+                for file_path in all_files:
+                    filename = os.path.basename(file_path).lower()
+                    if any(keyword in filename for keyword in ['injury', 'injured', 'il']):
+                        print(f"  Found potential match: {file_path}")
+                        all_matches.append(file_path)
     
+    # Last resort: Search the entire drive for injury files (can be slow)
+    if not all_matches:
+        print("No files found in primary locations. Performing deeper search (this may take a moment)...")
+        try:
+            # Use os.walk on a limited set of directories to avoid waiting too long
+            import fnmatch
+            search_roots = []
+            if os.path.exists(parent_dir):
+                search_roots.append(parent_dir)  # Start with parent directory first
+            if os.path.exists(os.path.join(os.path.expanduser("~"), "Documents")):
+                search_roots.append(os.path.join(os.path.expanduser("~"), "Documents"))
+                
+            # Only search the user's documents folder and parent directory to avoid very long searches
+            for search_root in search_roots:
+                print(f"  Searching {search_root}...")
+                for root, dirnames, filenames in os.walk(search_root):
+                    # Skip hidden directories like .git
+                    dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+                    
+                    for filename in fnmatch.filter(filenames, "*.csv"):
+                        if any(keyword in filename.lower() for keyword in ['injury', 'injured', 'il']):
+                            file_path = os.path.join(root, filename)
+                            print(f"  Found potential match: {file_path}")
+                            all_matches.append(file_path)
+        except Exception as e:
+            print(f"Error during deep search: {str(e)}")
+    
+    # Sort by modification time (newest first)
     if all_matches:
+        all_matches.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+        print(f"Found {len(all_matches)} potential injury list files.")
+        print(f"Most recent: {all_matches[0]}")
+        print(f"Last modified: {os.path.getmtime(all_matches[0])}")
         return all_matches[0]  # Return the most recent file
     
+    print("No injury list files found in any search directory.")
     return None
+
+
+def check_injury_files():
+    """Standalone function to check for available injury files without running the optimizer."""
+    print("\nMost Recent Injury Files Check")
+    print("=============================")
+    
+    injury_file = find_injured_list()
+    if injury_file:
+        print(f"\nFound most recent injury file: {injury_file}")
+        print(f"Last modified: {os.path.getmtime(injury_file)}")
+        
+        # Try to read the file and show a preview
+        try:
+            import pandas as pd
+            df = pd.read_csv(injury_file)
+            
+            # Try to identify the player name column
+            name_columns = [col for col in df.columns if any(keyword in col.lower() for keyword in ['name', 'player'])]
+            if name_columns:
+                name_col = name_columns[0]
+                print(f"\nPreview of '{name_col}' column (first 5 entries):")
+                for idx, name in enumerate(df[name_col].head(5).values):
+                    print(f"  {idx+1}. {name}")
+                print(f"\nTotal injured players: {len(df)}")
+            else:
+                print("\nCouldn't identify player name column in the file.")
+                print("Available columns:", ", ".join(df.columns))
+        except Exception as e:
+            print(f"\nError reading the file: {str(e)}")
+    else:
+        print("\nNo injury files found.")
+    
+    return injury_file
 
 
 def main():
@@ -612,10 +759,83 @@ def main():
         print(f"Error: Could not find CSV file at {csv_path}")
         return
     
-    # Find injured list if not provided - only if we're explicitly asked to use it via command-line argument
-    injured_list_path = args.injured_list
+    # Handle automatic injury file detection if requested
+    if args.auto_detect_injury:
+        print("Searching for injury files...")
+        injured_list_path = find_injured_list()
+        if injured_list_path:
+            print(f"Found injury list file: {injured_list_path}")
+            args.injured_list = injured_list_path
+        else:
+            print("No injury list file found automatically.")
+            use_manual = input("Would you like to specify a file path manually? (y/n): ")
+            if use_manual.lower() == 'y':
+                manual_path = input("Enter the path to the injury list file: ")
+                if os.path.exists(manual_path):
+                    args.injured_list = manual_path
+                else:
+                    print(f"File not found: {manual_path}")
+                    return
+            else:
+                # User doesn't want to specify a file manually, so continue without injury filtering
+                args.injured_list = None
+    
+    if args.injured_list:
+        if not os.path.exists(args.injured_list):
+            print(f"\nWARNING: Specified injury list file not found: {args.injured_list}")
+            use_anyway = input("Do you want to continue with this path anyway? (y/n): ").lower()
+            if use_anyway != 'y':
+                print("Exiting. Please check the injury file path.")
+                return
+        else:
+            # Check if injury file is readable and has the right format
+            try:
+                import pandas as pd
+                test_df = pd.read_csv(args.injured_list)
+                columns = test_df.columns.tolist()
+                print(f"\nInjury file format check:")
+                print(f"- File exists: Yes")
+                print(f"- Number of rows: {len(test_df)}")
+                print(f"- Columns found: {columns}")
+                
+                # Look for player name column
+                player_col = None
+                for col_name in ['Player', 'Name', 'PLAYER', 'NAME', 'player', 'name', 'PlayerName', 'Player Name']:
+                    if col_name in columns:
+                        player_col = col_name
+                        break
+                        
+                if player_col:
+                    print(f"- Player name column: '{player_col}' ✓")
+                    print(f"- First few players: {', '.join(test_df[player_col].head(3).tolist())}")
+                else:
+                    print(f"- WARNING: No player name column found! This may cause issues.")
+                    print(f"  Available columns: {', '.join(columns)}")
+            except Exception as e:
+                print(f"\nWARNING: Error while checking injury file: {str(e)}")
+                use_anyway = input("Do you want to continue anyway? (y/n): ").lower()
+                if use_anyway != 'y':
+                    print("Exiting. Please check the injury file format.")
+                    return
     
     try:
+        # Display active features
+        print("\nActive optimization features:")
+        if args.injured_list:
+            if os.path.exists(args.injured_list):
+                print(f"✓ Injury filtering: Excluding players from {os.path.basename(args.injured_list)}")
+            else:
+                print(f"⚠ Injury filtering: Will attempt to use {os.path.basename(args.injured_list)} (file not found)")
+        
+        if args.max_player_appearances:
+            print(f"✓ Player appearance limiting: Max {args.max_player_appearances} lineups per player")
+            
+        if args.stack_team:
+            print(f"✓ Team stacking: {args.stack_team} with {args.stack_count} players")
+            
+        print(f"✓ Lineup diversity: Minimum {args.lineup_diversity} different players between lineups")
+        print()
+            
         # Create optimizer with parameters from command line or defaults
         optimizer = AdvancedLineupOptimizer(
             csv_path=csv_path,

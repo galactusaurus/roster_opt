@@ -2,6 +2,9 @@
 echo MLB Daily Fantasy Lineup Optimizer
 echo ================================
 echo.
+echo NOTE: This is the original version of the optimizer interface.
+echo An improved version with better injury file detection is available as run_optimizer_new.bat
+echo.
 
 :menu
 echo Select an option:
@@ -9,11 +12,12 @@ echo.
 echo 1. Run Basic Optimizer
 echo 2. Run Advanced Optimizer
 echo 3. Run Advanced Optimizer with Injury List
-echo 4. Copy DraftKings file from Downloads
-echo 5. Return to Main Menu
+echo 4. Run Advanced Optimizer with Injury List AND Appearance Limits
+echo 5. Copy DraftKings file from Downloads
+echo 6. Return to Main Menu
 echo.
 
-set /p choice="Enter your choice (1-5): "
+set /p choice="Enter your choice (1-6): "
 
 if "%choice%"=="1" (
     echo Running basic optimizer...
@@ -114,17 +118,70 @@ if "%choice%"=="3" (
 )
 
 if "%choice%"=="4" (
+    echo Running Advanced Optimizer with Injury List AND Appearance Limits...
+    
+    :: Check for the injury report
+    set FOUND_INJURY_FILE=0
+    
+    :: Check project root directory first
+    if exist "..\mlb-injury-report.csv" (
+        set INJURY_FILE=..\mlb-injury-report.csv
+        set FOUND_INJURY_FILE=1
+        echo Found injury file: %INJURY_FILE%
+    )
+    
+    :: If not found in project root, search other locations
+    if "%FOUND_INJURY_FILE%"=="0" (
+        for /f "delims=" %%i in ('python -c "import os, glob, sys; all_files = []; paths = [os.getcwd(), os.path.dirname(os.getcwd()), os.path.join(os.path.expanduser(\'~\'), \'Downloads\')]; patterns = [\'mlb-injury*.csv\', \'*injury*.csv\', \'*injured*.csv\', \'*-IL-*.csv\']; [all_files.extend(glob.glob(os.path.join(p, pat))) for p in paths for pat in patterns]; all_files.sort(key=lambda x: os.path.getmtime(x), reverse=True); print(all_files[0] if all_files else \'\')"') do (
+            if not "%%i"=="" (
+                set INJURY_FILE=%%i
+                set FOUND_INJURY_FILE=1
+                echo Found injury file: %%i
+            )
+        )
+    )
+    
+    if "%FOUND_INJURY_FILE%"=="1" (
+        echo.
+        echo Last modified:
+        for /f "tokens=1,2" %%a in ('PowerShell -Command "Get-Item \"%INJURY_FILE%\" | Select-Object -ExpandProperty LastWriteTime"') do echo %%a %%b
+        echo.
+        
+        set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+        
+        echo.
+        echo Running optimizer with both injury filtering and player appearance limits...
+        python advanced_optimizer.py --injured-list "%INJURY_FILE%" --output "optimized_lineups.csv" --max-player-appearances %max_appearances%
+    ) else (
+        echo No injury list found automatically.
+        set /p CUSTOM_FILE="Enter path to injury list CSV (or press Enter to cancel): "
+        
+        if not "%CUSTOM_FILE%"=="" (
+            set /p max_appearances="Enter the maximum number of lineups a player can appear in: "
+            echo.
+            echo Running optimizer with both injury filtering and player appearance limits...
+            python advanced_optimizer.py --injured-list "%CUSTOM_FILE%" --output "optimized_lineups.csv" --max-player-appearances %max_appearances%
+        ) else (
+            echo Cannot run this option without an injury list.
+        )
+    )
+    
+    pause
+    goto menu
+)
+
+if "%choice%"=="5" (
     echo Copying DraftKings file from Downloads...
     python copy_dk_file.py
     pause
     goto menu
 )
 
-if "%choice%"=="5" (
+if "%choice%"=="6" (
     echo Returning to main menu...
     exit /b
 ) else (
-    if not "%choice%"=="1" if not "%choice%"=="2" if not "%choice%"=="3" if not "%choice%"=="4" (
+    if not "%choice%"=="1" if not "%choice%"=="2" if not "%choice%"=="3" if not "%choice%"=="4" if not "%choice%"=="5" if not "%choice%"=="6" (
         echo Invalid option. Please try again.
         pause
         goto menu

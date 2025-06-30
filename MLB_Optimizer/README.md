@@ -20,14 +20,15 @@ setup.bat
 
 You can run the optimizer using the batch file:
 ```
-run_optimizer.bat
+run_optimizer_new.bat
 ```
 
 This will provide options for using:
 1. The basic optimizer
 2. The advanced optimizer with stacking and diversity features
-3. The advanced optimizer with injured player filtering
-4. A utility to copy the latest DraftKings CSV file from your Downloads folder
+3. The advanced optimizer with injured player filtering (auto-detected)
+4. The advanced optimizer with both injury filtering and player appearance limits
+5. A utility to copy the latest DraftKings CSV file from your Downloads folder
 
 ### Advanced Optimizer Command Line Arguments
 
@@ -47,7 +48,24 @@ Available arguments:
 - `--lineup-diversity`: Minimum number of different players between lineups (default: 3)
 - `--max-player-appearances`: Maximum number of times a player can appear across all lineups
 - `--injured-list`: Path to CSV file containing injured players to exclude
+- `--auto-detect-injury`: Automatically detect and use the most recent injury list file
 - `--output`: Output CSV file name (default: optimized_lineups.csv)
+
+## Automatic Injury Detection
+
+The optimizer can automatically detect and use the most recent MLB injury list file with the `--auto-detect-injury` flag. This feature:
+
+1. Searches common locations for injury CSV files (current directory, parent directory, Downloads folder)
+2. Selects the most recently modified injury file
+3. Provides detailed feedback about the search process
+4. Falls back to recursive search in Documents if no file is found in standard locations
+
+Example usage:
+```bash
+python advanced_optimizer.py --auto-detect-injury --max-player-appearances 5
+```
+
+This allows you to run the optimizer with both injury filtering and player appearance limits without manually specifying the injury file path.
 
 ## MLB Lineup Rules
 
