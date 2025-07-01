@@ -1,0 +1,133 @@
+Test run started at 20:23:10.57 on Mon 06/30/2025 
+Optimizer: all 
+======================================== 
+ 
+test_extract_opponents (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_extract_opponents)
+Test extracting opponents from game information. ... ok
+test_filter_injured_players (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_filter_injured_players)
+Test filtering injured players from the player pool. ... ok
+test_find_injured_list (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_find_injured_list)
+Test the find_injured_list function. ... ok
+test_init (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_init)
+Test the initialization of the AdvancedLineupOptimizer class. ... ok
+test_lineup_diversity (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_lineup_diversity)
+Test lineup diversity constraints. ... skipped 'No lineups generated, skipping lineup diversity test.'
+test_max_players_from_team_constraint (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_max_players_from_team_constraint)
+Test the maximum players from one team constraint. ... skipped 'No lineups generated, skipping team constraint test.'
+test_min_salary_used_constraint (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_min_salary_used_constraint)
+Test minimum salary used constraint. ... skipped 'No lineups generated, skipping salary constraint test.'
+test_optimize_basic_functionality (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_optimize_basic_functionality)
+Test basic optimization functionality. ... skipped 'No lineups generated, skipping lineup structure test.'
+test_player_appearance_limit (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_player_appearance_limit)
+Test limiting the number of times a player can appear across lineups. ... ok
+test_team_stacking (test_advanced_optimizer.TestAdvancedLineupOptimizer.test_team_stacking)
+Test the team stacking functionality. ... skipped 'No lineups generated, skipping lineup structure test.'
+test_list_all_injury_files (test_injury_manager.TestInjuryManager.test_list_all_injury_files)
+Test finding all injury files. ... ok
+test_preview_injury_file (test_injury_manager.TestInjuryManager.test_preview_injury_file)
+Test previewing injury file contents. ... ok
+test_preview_injury_file_error (test_injury_manager.TestInjuryManager.test_preview_injury_file_error)
+Test handling errors when previewing invalid files. ... ok
+test_basic_to_advanced_optimizer_consistency (test_integration.TestMLBOptimizerIntegration.test_basic_to_advanced_optimizer_consistency)
+Test that basic and advanced optimizers produce consistent results. ... skipped 'Skipping optimizer points comparison since data structures may vary'
+test_end_to_end_optimization (test_integration.TestMLBOptimizerIntegration.test_end_to_end_optimization)
+Test the complete optimization workflow. ... skipped 'No lineups generated, skipping end-to-end test.'
+test_output_file_generation (test_integration.TestMLBOptimizerIntegration.test_output_file_generation)
+Test that output files are generated correctly. ... ok
+test_validated_optimizer_script (test_integration.TestMLBOptimizerIntegration.test_validated_optimizer_script)
+Test the run_validated_optimizer script. ... skipped 'Skipping due to issues with mocking built-in functions'
+test_data_loading (test_optimizer.TestLineupOptimizer.test_data_loading)
+Test that player data is loaded correctly. ... ok
+test_extract_opponent (test_optimizer.TestLineupOptimizer.test_extract_opponent)
+Test the _extract_opponent method. ... ok
+test_init (test_optimizer.TestLineupOptimizer.test_init)
+Test the initialization of the LineupOptimizer class. ... ok
+test_multiple_lineups_diversity (test_optimizer.TestLineupOptimizer.test_multiple_lineups_diversity)
+Test generating multiple lineups with diversity. ... skipped 'No lineups generated, skipping multiple lineups diversity test.'
+test_optimize_single_lineup (test_optimizer.TestLineupOptimizer.test_optimize_single_lineup)
+Test generating a single optimized lineup. ... skipped 'No lineups generated, skipping assertions'
+test_salary_cap_constraint (test_optimizer.TestLineupOptimizer.test_salary_cap_constraint)
+Test that the salary cap constraint is enforced. ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.037s
+
+OK (skipped=10)
+Python version: 3.12.0 (tags/v3.12.0:0fb18b0, Oct  2 2023, 13:03:39) [MSC v.1935 64 bit (AMD64)]
+Testing directory: C:\git\roster_opt
+Date and time: 2025-06-30 20:23:12
+----------------------------------------------------------------------
+
+Discovering MLB optimizer tests...
+Found 4 MLB test cases in C:\git\roster_opt\MLB_Optimizer\tests
+MLB test files: test_advanced_optimizer.py, test_injury_manager.py, test_integration.py, test_optimizer.py
+
+Discovering F1 optimizer tests...
+Error discovering F1 tests: Path must be within the project
+Make sure F1_Optimizer has all the required files.
+
+Running tests...
+Total test cases to run: 4
+----------------------------------------------------------------------
+Loading injured players from: test_injuries.csv
+Injury file columns: ['Player', 'Team', 'Position', 'Status']
+Using 'Player' as the player name column
+Found 3 players on the injury list
+Filtered out 3 injured players from the player pool.
+Searching for injury list files in:
+- C:\git\roster_opt
+- C:\git
+- C:\Users\galac\Downloads
+- C:\git\data
+  Found 1 matches for 'C:\git\roster_opt\mlb-injury*.csv'
+  Found 1 matches for 'C:\git\roster_opt\*injury*.csv'
+  Found 1 matches for 'C:\git\roster_opt\*injured*.csv'
+  Found 1 matches for 'C:\git\roster_opt\*-IL-*.csv'
+  Found 1 matches for 'C:\git\mlb-injury*.csv'
+  Found 1 matches for 'C:\git\*injury*.csv'
+  Found 1 matches for 'C:\git\*injured*.csv'
+  Found 1 matches for 'C:\git\*-IL-*.csv'
+  Found 1 matches for 'C:\Users\galac\Downloads\mlb-injury*.csv'
+  Found 1 matches for 'C:\Users\galac\Downloads\*injury*.csv'
+  Found 1 matches for 'C:\Users\galac\Downloads\*injured*.csv'
+  Found 1 matches for 'C:\Users\galac\Downloads\*-IL-*.csv'
+  Found 1 matches for 'C:\git\data\mlb-injury*.csv'
+  Found 1 matches for 'C:\git\data\*injury*.csv'
+  Found 1 matches for 'C:\git\data\*injured*.csv'
+  Found 1 matches for 'C:\git\data\*-IL-*.csv'
+Found 16 potential injury list files.
+Most recent: test_injuries.csv
+Last modified: 1751332992.96304
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+Loading injured players from: test_mlb_injuries.csv
+Injury file columns: ['Player', 'Team', 'Position', 'Status']
+Using 'Player' as the player name column
+Found 5 players on the injury list
+Filtered out 5 injured players from the player pool.
+Could not find optimal solution for lineup 1
+
+Lineups saved to C:\git\roster_opt\test_output\test_output_lineups.csv
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 2
+Could not find optimal solution for lineup 3
+Could not find optimal solution for lineup 1
+Could not find optimal solution for lineup 1
+
+Test Summary:
+----------------------------------------------------------------------
+Tests run: 23
+Failures: 0
+Errors: 0
+Skipped: 10
+Test duration: 2.04 seconds
+
+All tests PASSED!
+ 
+Test run completed at 20:23:15.10 on Mon 06/30/2025 
+======================================== 
+All tests PASSED successfully! 
