@@ -8,8 +8,8 @@ echo Choose a sport league to optimize:
 echo.
 echo 1. MLB (Baseball)
 echo 2. Formula 1
-echo 3. NFL (Football) - Coming soon
-echo 4. NBA (Basketball) - Coming soon
+echo 3. NBA/WNBA Showdown Captain
+echo 4. NFL (Football) - Coming soon
 echo 5. NHL (Hockey) - Coming soon
 echo 6. Exit
 echo.
@@ -31,15 +31,14 @@ if "%choice%"=="2" (
 )
 
 if "%choice%"=="3" (
-    echo NFL optimization is not yet available.
-    echo This feature will be implemented soon!
-    echo.
-    pause
+    cd NBA-WNBA-ShowdownCaptain_optimizer
+    call run_optimizer.bat
+    cd ..
     goto menu
 )
 
 if "%choice%"=="4" (
-    echo NBA optimization is not yet available.
+    echo NFL optimization is not yet available.
     echo This feature will be implemented soon!
     echo.
     pause

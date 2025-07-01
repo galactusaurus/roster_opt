@@ -15,6 +15,7 @@ The project is organized into sport-specific subdirectories:
 
 - `MLB_Optimizer/` - MLB baseball lineup optimizer
 - `F1_Optimizer/` - Formula 1 lineup optimizer
+- `WNBA_Optimizer/` - WNBA basketball Showdown lineup optimizer
 - `NFL_Optimizer/` - (Coming soon) NFL football lineup optimizer
 - `NBA_Optimizer/` - (Coming soon) NBA basketball lineup optimizer
 - `NHL_Optimizer/` - (Coming soon) NHL hockey lineup optimizer

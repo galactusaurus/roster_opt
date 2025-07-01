@@ -3,14 +3,24 @@ echo Formula 1 DFS Lineup Optimizer
 echo ============================
 echo.
 echo Please select an option:
-echo 1. Run basic optimizer
-echo 2. Run advanced optimizer
-echo 3. Exit
+echo 1. Copy latest DraftKings file from Downloads
+echo 2. Run basic optimizer
+echo 3. Run advanced optimizer
+echo 4. Exit
 echo.
 
-set /p option="Enter your choice (1-3): "
+set /p option="Enter your choice (1-4): "
 
 if "%option%"=="1" (
+    echo.
+    echo Copying latest DraftKings file...
+    python copy_dk_file.py
+    echo.
+    pause
+    exit /b 0
+)
+
+if "%option%"=="2" (
     echo.
     echo Running basic Formula 1 lineup optimizer...
     echo.
@@ -19,7 +29,7 @@ if "%option%"=="1" (
     exit /b 0
 )
 
-if "%option%"=="2" (
+if "%option%"=="3" (
     echo.
     echo Running advanced Formula 1 lineup optimizer...
     echo.
@@ -39,7 +49,7 @@ if "%option%"=="2" (
     exit /b 0
 )
 
-if "%option%"=="3" (
+if "%option%"=="4" (
     echo Exiting...
     exit /b 0
 )

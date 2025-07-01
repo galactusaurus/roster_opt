@@ -15,6 +15,7 @@ set optimizer_arg=all
 if not "%1"=="" (
     if "%1"=="mlb" set optimizer_arg=mlb
     if "%1"=="f1" set optimizer_arg=f1
+    if "%1"=="nba-wnba" set optimizer_arg=nba-wnba
     if "%1"=="all" set optimizer_arg=all
 )
 

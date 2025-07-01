@@ -1,0 +1,265 @@
+Test run started at 21:22:03.30 on Mon 06/30/2025 
+Optimizer: nba-wnba 
+======================================== 
+ 
+test_init (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_init)
+Test the initialization of the advanced optimizer. ... ok
+test_lineup_diversity (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_lineup_diversity)
+Test lineup diversity constraints. ... skipped 'Not enough lineups generated, skipping diversity test'
+test_min_salary_used_constraint (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_min_salary_used_constraint)
+Test minimum salary used constraint. ... ok
+test_player_exposure_constraints (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_player_exposure_constraints)
+Test applying player exposure constraints. ... skipped 'No lineups generated, skipping exposure test'
+test_team_correlations (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_team_correlations)
+Test that team correlations are initialized correctly. ... ok
+test_team_stacking (test_advanced_optimizer.TestAdvancedWNBAShowdownOptimizer.test_team_stacking)
+Test the team stacking functionality. ... ok
+test_basic_to_advanced_optimizer_consistency (test_integration.TestWNBAOptimizerIntegration.test_basic_to_advanced_optimizer_consistency)
+Test that basic and advanced optimizers produce consistent results. ... ok
+test_end_to_end_optimization (test_integration.TestWNBAOptimizerIntegration.test_end_to_end_optimization)
+Test the complete optimization workflow. ... ok
+test_output_file_generation (test_integration.TestWNBAOptimizerIntegration.test_output_file_generation)
+Test that output files are generated correctly. ... ok
+test_data_loading (test_optimizer.TestWNBAShowdownOptimizer.test_data_loading)
+Test that player data is loaded correctly. ... ok
+test_extract_opponent (test_optimizer.TestWNBAShowdownOptimizer.test_extract_opponent)
+Test the _extract_opponent method. ... ok
+test_init (test_optimizer.TestWNBAShowdownOptimizer.test_init)
+Test the initialization of the optimizer. ... ok
+test_optimize_single_lineup (test_optimizer.TestWNBAShowdownOptimizer.test_optimize_single_lineup)
+Test generating a single optimized lineup. ... ok
+test_salary_cap_constraint (test_optimizer.TestWNBAShowdownOptimizer.test_salary_cap_constraint)
+Test that the salary cap constraint is enforced. ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.795s
+
+OK (skipped=2)
+Python version: 3.12.0 (tags/v3.12.0:0fb18b0, Oct  2 2023, 13:03:39) [MSC v.1935 64 bit (AMD64)]
+Testing directory: C:\git\roster_opt
+Date and time: 2025-06-30 21:22:05
+----------------------------------------------------------------------
+
+Discovering NBA/WNBA Showdown Captain optimizer tests...
+Found 3 NBA/WNBA test cases in C:\git\roster_opt\NBA-WNBA-ShowdownCaptain_optimizer\tests
+NBA/WNBA test files: test_advanced_optimizer.py, test_integration.py, test_optimizer.py
+
+Running tests...
+Total test cases to run: 3
+----------------------------------------------------------------------
+Loaded 10 players from test_wnba_advanced.csv
+Loaded 10 players from test_wnba_advanced.csv
+
+Generating lineup 1 of 3
+Lineup 10 optimization complete:
+Captain: Player1 (LVA)
+Utility players:
+- Player2 (LVA)
+- Player3 (LVA)
+- Player4 (LVA)
+- Player5 (LVA)
+- Player6 (NYL)
+Team breakdown:
+- LVA: 5 players
+- NYL: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 230.00
+
+Generating lineup 2 of 3
+Could not find optimal solution for lineup 10
+
+Generating lineup 3 of 3
+Could not find optimal solution for lineup 10
+Loaded 10 players from test_wnba_advanced.csv
+
+Generating lineup 1 of 1
+Lineup 10 optimization complete:
+Captain: Player1 (LVA)
+Utility players:
+- Player2 (LVA)
+- Player3 (LVA)
+- Player4 (LVA)
+- Player5 (LVA)
+- Player6 (NYL)
+Team breakdown:
+- LVA: 5 players
+- NYL: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 230.00
+Loaded 10 players from test_wnba_advanced.csv
+
+Generating lineup 1 of 1
+Could not find optimal solution for lineup 1
+Loaded 10 players from test_wnba_advanced.csv
+Loaded 10 players from test_wnba_advanced.csv
+
+Generating lineup 1 of 1
+Added constraint to include at least 4 players from LVA
+Lineup 10 optimization complete:
+Captain: Player1 (LVA)
+Utility players:
+- Player2 (LVA)
+- Player3 (LVA)
+- Player4 (LVA)
+- Player5 (LVA)
+- Player6 (NYL)
+Team breakdown:
+- LVA: 5 players
+- NYL: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 230.00
+Loaded 100 players from test_wnba_players.csv
+Loaded 100 players from test_wnba_players.csv
+
+Generating lineup 1 of 1
+Lineup 100 optimization complete:
+Captain: Player48 (DAL)
+Utility players:
+- Player2 (CON)
+- Player9 (ATL)
+- Player12 (CON)
+- Player22 (CON)
+- Player73 (SEA)
+Total salary: $50000.0
+Projected points: 200.00
+
+Generating lineup 1 of 1
+Lineup 100 optimization complete:
+Captain: Player48 (DAL)
+Utility players:
+- Player2 (CON)
+- Player9 (ATL)
+- Player12 (CON)
+- Player22 (CON)
+- Player73 (SEA)
+Team breakdown:
+- DAL: 1 players
+- CON: 3 players
+- ATL: 1 players
+- SEA: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+Loaded 100 players from test_wnba_players.csv
+
+Generating lineup 1 of 3
+Added constraint to include at least 3 players from LVA
+Lineup 100 optimization complete:
+Captain: Player78 (DAL)
+Utility players:
+- Player0 (LVA)
+- Player29 (ATL)
+- Player50 (LVA)
+- Player59 (ATL)
+- Player60 (LVA)
+Team breakdown:
+- DAL: 1 players
+- LVA: 3 players
+- ATL: 2 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+
+Generating lineup 2 of 3
+Added constraint to include at least 3 players from LVA
+Lineup 100 optimization complete:
+Captain: Player48 (DAL)
+Utility players:
+- Player20 (LVA)
+- Player40 (LVA)
+- Player60 (LVA)
+- Player69 (ATL)
+- Player89 (ATL)
+Team breakdown:
+- DAL: 1 players
+- LVA: 3 players
+- ATL: 2 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+
+Generating lineup 3 of 3
+Added constraint to include at least 3 players from LVA
+Lineup 100 optimization complete:
+Captain: Player78 (DAL)
+Utility players:
+- Player10 (LVA)
+- Player59 (ATL)
+- Player60 (LVA)
+- Player79 (ATL)
+- Player80 (LVA)
+Team breakdown:
+- DAL: 1 players
+- LVA: 3 players
+- ATL: 2 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+Loaded 100 players from test_wnba_players.csv
+
+Generating lineup 1 of 2
+Lineup 100 optimization complete:
+Captain: Player48 (DAL)
+Utility players:
+- Player2 (CON)
+- Player9 (ATL)
+- Player12 (CON)
+- Player22 (CON)
+- Player73 (SEA)
+Team breakdown:
+- DAL: 1 players
+- CON: 3 players
+- ATL: 1 players
+- SEA: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+
+Generating lineup 2 of 2
+Lineup 100 optimization complete:
+Captain: Player48 (DAL)
+Utility players:
+- Player1 (NYL)
+- Player12 (CON)
+- Player25 (PHO)
+- Player62 (CON)
+- Player68 (DAL)
+Team breakdown:
+- DAL: 2 players
+- NYL: 1 players
+- CON: 2 players
+- PHO: 1 players
+Total salary: $50000.0 of $50000
+Projected points: 200.00
+Lineups saved to C:\git\roster_opt\test_output\test_wnba_lineups.csv
+Detailed lineups saved to C:\git\roster_opt\test_output\test_wnba_lineups.csv
+Loaded 8 players from test_wnba_players.csv
+Loaded 8 players from test_wnba_players.csv
+Loaded 8 players from test_wnba_players.csv
+Loaded 8 players from test_wnba_players.csv
+
+Generating lineup 1 of 1
+Lineup 8 optimization complete:
+Captain: Player1 (LVA)
+Utility players:
+- Player2 (LVA)
+- Player3 (NYL)
+- Player4 (NYL)
+- Player5 (CON)
+- Player6 (CON)
+Total salary: $50000.0
+Projected points: 185.00
+Loaded 8 players from test_wnba_players.csv
+Loaded 6 players from high_salary_test.csv
+
+Generating lineup 1 of 1
+Could not find optimal solution for lineup 6
+
+Test Summary:
+----------------------------------------------------------------------
+Tests run: 14
+Failures: 0
+Errors: 0
+Skipped: 2
+Test duration: 1.79 seconds
+
+All tests PASSED!
+ 
+Test run completed at 21:22:07.98 on Mon 06/30/2025 
+======================================== 
+All tests PASSED successfully! 

@@ -20,12 +20,19 @@ roster_opt/
 │       ├── test_injury_manager.py      # Injury manager tests
 │       └── test_integration.py         # MLB integration tests
 │
-└── F1_Optimizer/
+├── F1_Optimizer/
+│   └── tests/
+│       ├── __init__.py
+│       ├── test_optimizer.py           # Basic F1 optimizer tests
+│       ├── test_advanced_optimizer.py  # Advanced F1 optimizer tests
+│       └── test_integration.py         # F1 integration tests
+│
+└── WNBA_Optimizer/
     └── tests/
         ├── __init__.py
-        ├── test_optimizer.py           # Basic F1 optimizer tests
-        ├── test_advanced_optimizer.py  # Advanced F1 optimizer tests
-        └── test_integration.py         # F1 integration tests
+        ├── test_optimizer.py           # Basic WNBA Showdown optimizer tests
+        ├── test_advanced_optimizer.py  # Advanced WNBA Showdown optimizer tests
+        └── test_integration.py         # WNBA integration tests
 ```
 
 ## Running Tests
