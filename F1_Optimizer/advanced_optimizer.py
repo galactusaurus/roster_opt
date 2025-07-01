@@ -240,7 +240,8 @@ class AdvancedLineupOptimizer:
                     'position': player['Roster Position'],
                     'team': player['TeamAbbrev'],
                     'salary': player['Salary'],
-                    'avg_points': points,
+                    'avg_points': player['AvgPointsPerGame'],  # Base points
+                    'points': points,  # Calculated points (with captain multiplier if applicable)
                     'game_info': player['Game Info']
                 })
                 
@@ -253,7 +254,7 @@ class AdvancedLineupOptimizer:
             
             # Sort players by position in the required order (CPT first, then D, then CNSTR)
             position_order = {'CPT': 0, 'D': 1, 'CNSTR': 2}
-            lineup_data['players'].sort(key=lambda x: (position_order[x['position']], -x['avg_points']))
+            lineup_data['players'].sort(key=lambda x: (position_order[x['position']], -x['points']))
             
             lineups.append(lineup_data)
         
@@ -287,7 +288,7 @@ class AdvancedLineupOptimizer:
                 # Highlight teams with multiple drivers
                 team_indicator = f"{player['team']}*" if team_counts[player['team']] > 1 and player['position'] != 'CNSTR' else player['team']
                 print(f"{player['position']:<6}{player['name']:<30}{team_indicator:<8}"
-                      f"${player['salary']:<9}{player['avg_points']:<10.2f}"
+                      f"${player['salary']:<9}{player['points']:<10.2f}"
                       f"{player['game_info']:<20}")
             
             print(f"{'='*80}")
@@ -334,7 +335,7 @@ class AdvancedLineupOptimizer:
                         player['name'], 
                         player['team'],
                         player['salary'], 
-                        player['avg_points'],
+                        player['points'],  # Use calculated points for CSV output
                         player['game_info']
                     ])
         
@@ -396,14 +397,14 @@ class AdvancedLineupOptimizer:
                         # Get player ID
                         player_data = {
                             'id': player['id'],
-                            'avg_points': player['avg_points']
+                            'points': player['points']  # Use calculated points
                         }
                         players_by_position[pos].append(player_data)
                 
                 # Sort players by average points within each position
                 for pos in players_by_position:
                     if len(players_by_position[pos]) > 0:
-                        players_by_position[pos].sort(key=lambda x: x['avg_points'], reverse=True)
+                        players_by_position[pos].sort(key=lambda x: x['points'], reverse=True)
                 
                 # Build the roster row with IDs in the correct position order
                 roster_row = []

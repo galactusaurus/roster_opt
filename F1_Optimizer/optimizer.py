@@ -148,14 +148,15 @@ class LineupOptimizer:
                     'team': player['TeamAbbrev'],
                     'game_info': player['Game Info'],
                     'salary': player['Salary'],
-                    'avg_points': points
+                    'avg_points': player['AvgPointsPerGame'],  # Base points
+                    'points': points  # Calculated points (with captain multiplier if applicable)
                 })
                 lineup_data['total_salary'] += player['Salary']
                 lineup_data['total_points'] += points
             
             # Sort players by position in the required order (CPT first, then D, then CNSTR)
             position_order = {'CPT': 0, 'D': 1, 'CNSTR': 2}
-            lineup_data['players'].sort(key=lambda x: (position_order[x['position']], -x['avg_points']))
+            lineup_data['players'].sort(key=lambda x: (position_order[x['position']], -x['points']))
             
             lineups.append(lineup_data)
         
@@ -238,14 +239,14 @@ class LineupOptimizer:
                         # Get player ID (already stored in player data)
                         player_data = {
                             'id': player['id'],
-                            'avg_points': player['avg_points']
+                            'points': player['points']  # Use calculated points
                         }
                         players_by_position[pos].append(player_data)
                 
                 # Sort players by average points within each position
                 for pos in players_by_position:
                     if len(players_by_position[pos]) > 0:
-                        players_by_position[pos].sort(key=lambda x: x['avg_points'], reverse=True)
+                        players_by_position[pos].sort(key=lambda x: x['points'], reverse=True)
                 
                 # Build the roster row with IDs in the correct position order
                 roster_row = []
